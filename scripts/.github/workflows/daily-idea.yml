@@ -1,0 +1,44 @@
+name: AI Game Idea
+
+on:
+  schedule:
+    - cron: "0 12 * * *"  # every day at 06:00 UTC
+  workflow_dispatch:
+
+jobs:
+  daily-idea:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Generate mechanic (Python)
+        run: |
+          python scripts/generate_mechanic.py
+
+      # If you ever want to also run JS / Go manually, you could add:
+      # - name: Run JS generator
+      #   run: node scripts/generate_mechanic.js
+      #
+      # - name: Run Go generator
+      #   run: |
+      #     go run scripts/generate_mechanic.go
+
+      - name: Commit and push
+        run: |
+          git config user.name "YOUR_GITHUB_USERNAME"
+          git config user.email "YOUR_EMAIL@example.com"
+
+          if [ -n "$(git status --porcelain)" ]; then
+            git add .
+            git commit -m "chore: daily AI game idea $(date -u +'%Y-%m-%d')"
+            git push
+          else
+            echo "No changes to commit."
+          fi
