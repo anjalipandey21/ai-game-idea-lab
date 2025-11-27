@@ -32,8 +32,8 @@ jobs:
 
       - name: Commit and push
         run: |
-          git config user.name "YOUR_GITHUB_USERNAME"
-          git config user.email "YOUR_EMAIL@example.com"
+          git config user.name "anjalipandey21"
+          git config user.email "anjalipandey0821.com"
 
           if [ -n "$(git status --porcelain)" ]; then
             git add .
